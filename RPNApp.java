@@ -10,13 +10,17 @@ public RPNApp {
     stack = new Stack();
     
     while(scan.hasNext()) {
-      nextInput(); 
+      char in = scan.nextChar();
+
+      interpret(in); 
     }
     
   }
   
-  private static void nextInput() {
-    char in = scan.nextChar();
+  /** Takes an input and does the appropriate operation.
+    * @param in the input to interpret
+    */
+  private static void interpret(char in) {
     
     switch(in) {
         
@@ -56,6 +60,5 @@ public RPNApp {
   
   private static void error(String message) {
     
-  }
-  
+  } 
 }
