@@ -7,5 +7,13 @@ public RPNApp {
   public static void main(String[] args) {
     scan = new Scanner(System.in);
     
+    while(scan.hasNext()) {
+      nextInput(); 
+    }
+    
+  }
+  
+  private static void nextInput() {
+    
   }
 }
