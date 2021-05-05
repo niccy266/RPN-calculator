@@ -2,30 +2,33 @@ import java.util.*;
 
 
 /** 
-  * @author Nicolas Concha
-  * @author 
-  * @author 
-  **/
+ * RPN calculator
+ * @author Nicolas Concha
+ * @author R
+ * @author D
+ **/
 public class RPNApp {
   
   private static Scanner scan;
-  private static Stack stack;
+  private static Stack<Integer> stack;
   
-  /** Main function, creates stack and reads input from System.in.
-    * Starting the interpreting cycle.
-    * @param args system arguments
-    **/
+  /** 
+   * Main function, creates stack and reads input from System.in.
+   * Starting the interpreting cycle.
+   * @param args system arguments
+   **/
   public static void main(String[] args) {
     scan = new Scanner(System.in);
-    stack = new Stack();
+    stack = new Stack<Integer>();
     
     readInput(scan);
   }
   
   
-  /** Reads to the end of a scanner and interpreting data.
-    * @param s scanner to read from
-    **/
+  /** 
+   * Reads to the end of a scanner and interpreting data.
+   * @param s scanner to read from
+   **/
   public static void readInput(Scanner s) {
     while(s.hasNext()) {
       interpret(s); 
@@ -35,10 +38,11 @@ public class RPNApp {
   }
   
   
-  /** Takes the next input from a scanner and does the appropriate operation.
-    * @param in the scanner to read from and interpret
-    */
-  private static void interpret(Scanner s) {
+  /** 
+   * Takes the next input from a scanner and does the appropriate operation.
+   * @param s the scanner to read from and interpret
+   */
+  public static void interpret(Scanner s) {
     char in = s.next().charAt(0);
     
     switch(in) {
@@ -59,19 +63,20 @@ public class RPNApp {
     }
   }
   
-  /** Takes the last two numbers on the stack and
-    * performs the specified operation.
-    * @param in the operation to perform
-    **/
-  private static void operate(char in) {
+  /** 
+   * Takes the last two numbers on the stack and
+   * performs the specified operation.
+   * @param in the operation to perform
+   **/
+  public static void operate(char in) {
     
   }
   
   /** Reads until it finds a close bracket and 
-    * repeats the operations a number of times
-    * equal to number on top of the stack.
-    **/
-  private static void openBracket(Scanner s) {
+   * repeats the operations a number of times
+   * equal to number on top of the stack.
+   **/
+  public static void openBracket(Scanner s) {
     //getting the symbols inside the brackets and creating a new scanner for it
     String inBrackets = extractBrackets(s);
     Scanner bracketStream;
@@ -87,12 +92,12 @@ public class RPNApp {
   }
   
   /** Finds the instructions within a pair of brackets.
-    * Searches until a closing bracket is found, preserves 
-    * recursive brackets by keeping track of the number of unclosed brackets
-    * @param s the string to read bracket data from
-    * @return string of characters between the brackets
-    **/
-  private static String extractBrackets(Scanner s) {
+   * Searches until a closing bracket is found, preserves 
+   * recursive brackets by keeping track of the number of unclosed brackets
+   * @param s the string to read bracket data from
+   * @return string of characters between the brackets
+   **/
+  public static String extractBrackets(Scanner s) {
     //string for storing the contents of the brackets
     StringBuilder inBrackets = new StringBuilder();
     //num of unclosed brackets
@@ -126,22 +131,24 @@ public class RPNApp {
   }
   
   
-  /** Raises error if there is a closing parenthesis
-    * without an opening parenthesis preceding it at some point
-    **/
-  private static void closeBracket() {
+  /** 
+   * Raises error if there is a closing parenthesis
+   * without an opening parenthesis preceding it at some point
+   **/
+  public static void closeBracket() {
     error("mismatched brackets");
   }
   
-  /** Parses the input to an integer and pushes it to the stack.
-    * @param in input char
-    **/
-  private static void pushNum(char in) {
+  /** 
+   * Parses the input to an integer and pushes it to the stack.
+   * @param in input char
+   **/
+  public static void pushNum(char in) {
     
   }
   
   /** Method for printing error messages easily. **/
-  private static void error(String message) {
+  public static void error(String message) {
     
   } 
 }
