@@ -39,7 +39,7 @@ public class RPNApp {
     * @param in the scanner to read from and interpret
     */
   private static void interpret(Scanner s) {
-    char in = s.nextChar();
+    char in = s.next().charAt(0);
     
     switch(in) {
       case '+' :
@@ -78,7 +78,7 @@ public class RPNApp {
     
     //number of times to repeat brackets
     n = stack.pop();
-    for (int i = 0; i < ) {
+    for (int i = 0; i < n; i++) {
       //resets the bracket scanner so it can be repeated
       bracketStream = new Scanner(inBrackets);
       //completes the operations within the brackets
@@ -94,13 +94,13 @@ public class RPNApp {
     **/
   private static String extractBrackets(Scanner s) {
     //string for storing the contents of the brackets
-    StringBuilder inBrackets = new StringBuilder;
+    StringBuilder inBrackets = new StringBuilder();
     //num of unclosed brackets
     int numBrackets = 1; 
     
     //finds the matching closing bracket
     while(s.hasNext() && numBrackets > 0) {
-      char in = s.nextChar();
+      char in = s.next().charAt(0);;
       switch(in) {
         case ')' :
           //marks a bracket as closed
