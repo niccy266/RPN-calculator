@@ -82,7 +82,7 @@ public class RPNApp {
     Scanner bracketStream;
     
     //number of times to repeat brackets
-    int n = ((Integer) stack.pop()).intValue();
+    int n = stack.pop();
     for (int i = 0; i < n; i++) {
       //resets the bracket scanner so it can be repeated
       bracketStream = new Scanner(inBrackets);
