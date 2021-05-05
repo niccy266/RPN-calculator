@@ -29,11 +29,11 @@ public class RPNApp {
    * Reads to the end of a scanner and interprets inputs.
    * @param s scanner to read from
    **/
-  public static void readInput(Scanner s) {
+  protected static void readInput(Scanner s) {
     while(s.hasNext()) {
       interpret(s); 
     }
-    //saves memory by closing scanner when they are completed
+    //saves memory by closing scanners when they are completed
     s.close();
   }
   
@@ -42,7 +42,7 @@ public class RPNApp {
    * Takes the next input from a scanner and does the appropriate operation.
    * @param s the scanner to read from and interpret
    */
-  public static void interpret(Scanner s) {
+  protected static void interpret(Scanner s) {
     char in = s.next().charAt(0);
     
     switch(in) {
@@ -68,7 +68,7 @@ public class RPNApp {
    * performs the specified operation.
    * @param in the operation to perform
    **/
-  public static void operate(char in) {
+  protected static void operate(char in) {
     
   }
   
@@ -76,7 +76,7 @@ public class RPNApp {
    * repeats the operations a number of times
    * equal to number on top of the stack.
    **/
-  public static void openBracket(Scanner s) {
+  protected static void openBracket(Scanner s) {
     //getting the symbols inside the brackets and creating a new scanner for it
     String inBrackets = extractBrackets(s);
     Scanner bracketStream;
@@ -97,7 +97,7 @@ public class RPNApp {
    * @param s the string to read bracket data from
    * @return string of characters between the brackets
    **/
-  public static String extractBrackets(Scanner s) {
+  protected static String extractBrackets(Scanner s) {
     //string for storing the contents of the brackets
     StringBuilder inBrackets = new StringBuilder();
     //num of unclosed brackets
@@ -135,7 +135,7 @@ public class RPNApp {
    * Raises error if there is a closing parenthesis
    * without an opening parenthesis preceding it at some point
    **/
-  public static void closeBracket() {
+  protected static void closeBracket() {
     error("mismatched brackets");
   }
   
@@ -143,7 +143,7 @@ public class RPNApp {
    * Parses the input to an integer and pushes it to the stack.
    * @param in input char
    **/
-  public static void pushNum(char in) {
+  protected static void pushNum(char in) {
     
   }
   
@@ -151,7 +151,7 @@ public class RPNApp {
   /** Method for printing error messages easily. 
    * @param message breif explanation of what went wrong
    **/
-  public static void error(String message) {
+  protected static void error(String message) {
     
   } 
 }
