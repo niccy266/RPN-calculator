@@ -26,7 +26,7 @@ public class RPNApp {
   
   
   /** 
-   * Reads to the end of a scanner and interpreting data.
+   * Reads to the end of a scanner and interprets inputs.
    * @param s scanner to read from
    **/
   public static void readInput(Scanner s) {
