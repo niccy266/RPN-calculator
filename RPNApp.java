@@ -6,7 +6,7 @@ import java.util.*;
   * @author 
   * @author 
   **/
-public RPNApp {
+public class RPNApp {
   
   Scanner scan;
   Stack stack;
@@ -18,7 +18,6 @@ public RPNApp {
   public static void main(String[] args) {
     scan = new Scanner(System.in);
     stack = new Stack();
-    
     
     readInput(scan);
   }
@@ -104,10 +103,13 @@ public RPNApp {
       char in = s.nextChar();
       switch(in) {
         case ')' :
+          //marks a bracket as closed
           numBrackets--;
+          //if this was the final closing bracket, don't include it in the return string
           if(numBrackets == 0) {
             break;
           }
+        //if it's an opening bracket or any other symbol, include it in the string
         case '(' :
           numBrackets++;
         default:
@@ -115,6 +117,7 @@ public RPNApp {
       }
     }
     
+    //if not all the brackets were closed, raise an error
     if (numBrackets > 0) {
       error("mismatched brackets");
     }
