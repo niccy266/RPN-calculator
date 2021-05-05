@@ -8,8 +8,8 @@ import java.util.*;
   **/
 public class RPNApp {
   
-  Scanner scan;
-  Stack stack;
+  private static Scanner scan;
+  private static Stack stack;
   
   /** Main function, creates stack and reads input from System.in.
     * Starting the interpreting cycle.
@@ -77,7 +77,7 @@ public class RPNApp {
     Scanner bracketStream;
     
     //number of times to repeat brackets
-    n = stack.pop();
+    int n = ((Integer) stack.pop()).intValue();
     for (int i = 0; i < n; i++) {
       //resets the bracket scanner so it can be repeated
       bracketStream = new Scanner(inBrackets);
