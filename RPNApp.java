@@ -147,7 +147,10 @@ public class RPNApp {
     
   }
   
-  /** Method for printing error messages easily. **/
+  
+  /** Method for printing error messages easily. 
+   * @param message breif explanation of what went wrong
+   **/
   public static void error(String message) {
     
   } 
