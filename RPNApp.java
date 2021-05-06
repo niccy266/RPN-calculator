@@ -43,19 +43,25 @@ public class RPNApp {
    * @param s the scanner to read from and interpret
    */
   protected static void interpret(Scanner s) {
-    char in = s.next().charAt(0);
+    char in = s.next()
     
     switch(in) {
-      case '+' :
-      case '-' :
-      case 'x' :
-      case '/' :
+      case "+" :
+      case "-" :
+      case "*" :
+      case "/" :
         operate(in);
         break;
-      case '(' :
+      case "+!" :
+      case "-!" :
+      case "*!" :
+      case "/!" :
+        operate(in);
+        break;
+      case "(" :
         openBracket(s);
         break;
-      case ')' :
+      case ")" :
         closeBracket();
         break;
       default :
@@ -68,7 +74,7 @@ public class RPNApp {
    * performs the specified operation.
    * @param in the operation to perform
    **/
-  protected static void operate(char in) {
+  protected static void operate(String in) {
     
   }
   
@@ -143,15 +149,16 @@ public class RPNApp {
    * Parses the input to an integer and pushes it to the stack.
    * @param in input char
    **/
-  protected static void pushNum(char in) {
-    
+  protected static void pushNum(String in) {
+    try
+    stack.push(5);
   }
   
   
   /** Method for printing error messages easily. 
    * @param message breif explanation of what went wrong
    **/
-  protected static void error(String message) {
+  public static void error(String message) {
     
   } 
 }
