@@ -9,7 +9,6 @@ import java.util.*;
  **/
 public class RPNApp {
   
-  private static Scanner scan;
   private static Stack<Integer> stack;
   
   /** 
@@ -18,10 +17,11 @@ public class RPNApp {
    * @param args system arguments
    **/
   public static void main(String[] args) {
-    scan = new Scanner(System.in);
+    Scanner scan = new Scanner(System.in);
     stack = new Stack<Integer>();
     
     readInput(scan);
+    System.out.println(stack.toString());
   }
   
   
@@ -116,8 +116,9 @@ public class RPNApp {
    **/
   protected static void copy() {
     //gets number of times to duplicate x
-    int n = stack.pop();
-    for (int i = 0; i < n; i ++) {
+    int y = stack.pop();
+    //duplicates the number n times
+    for (int i = 0; i < y; i ++) {
       duplicate();
     }
   }
@@ -126,8 +127,8 @@ public class RPNApp {
    * peeks at the number on top of the stack and pushes it again, duplicating it
    **/
   protected static void duplicate() {
-    int top = stack.peek();
-    stack.push(top);
+    int x = stack.peek();
+    stack.push(x);
   }
   
   /** 
