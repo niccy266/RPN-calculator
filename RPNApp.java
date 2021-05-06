@@ -4,8 +4,8 @@ import java.util.*;
 /** 
  * RPN calculator
  * @author Nicolas Concha
- * @author R
- * @author D
+ * @author Ravin Pitawala
+ * @author Danuda Jayawardena
  **/
 public class RPNApp {
   
