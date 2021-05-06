@@ -4,8 +4,8 @@ import java.util.*;
 /** 
  * RPN calculator
  * @author Nicolas Concha
- * @author Ravin Pitawala
- * @author Danuda Jayawardena
+ * @author R
+ * @author D
  **/
 public class RPNApp {
   
@@ -43,27 +43,45 @@ public class RPNApp {
    * @param s the scanner to read from and interpret
    */
   protected static void interpret(Scanner s) {
-    char in = s.next()
+    String in = s.next();
     
     switch(in) {
       case "+" :
       case "-" :
       case "*" :
       case "/" :
+      case "%" :
         operate(in);
         break;
+        
       case "+!" :
       case "-!" :
       case "*!" :
       case "/!" :
-        operate(in);
+      case "%!" :
+        repeat(in.substring(0, 0));
         break;
+        
+      case "c" :
+        copy();
+        break;
+      case "d" :
+        duplicate();
+        break;
+      case "o" :
+        output();
+        break;
+      case "r" :
+        rotate();
+        break;
+        
       case "(" :
         openBracket(s);
         break;
       case ")" :
         closeBracket();
         break;
+        
       default :
         pushNum(in);
     }
@@ -75,6 +93,49 @@ public class RPNApp {
    * @param in the operation to perform
    **/
   protected static void operate(String in) {
+    
+  }
+  
+  /** 
+   * repeats the operate function until the stack is reduced to 1 number
+   * @param in the operator to repeat
+   **/
+  protected static void repeat(String in) {
+    system.out.println(in);
+    
+    if (stack.empty()) {
+      error("too few operands");
+    }
+    while (stack.size() > 1) {
+      operate(in);
+    }
+  }
+  
+  /** 
+   * takes the last two numbers on the stack, y and x and pushes x, y times onto the stack
+   **/
+  protected static void copy() {
+    
+  }
+  
+  /** 
+   * peeks at the number on top of the stack and pushes it again, duplicating it
+   **/
+  protected static void duplicate() {
+    
+  }
+  
+  /** 
+   * outputs the last number on the stack to System.out
+   **/
+  protected static void output() {
+    
+  }
+  
+  /** 
+   * takes the number on top of the stack and moves it to the bottom
+   **/
+  protected static void rotate() {
     
   }
   
@@ -124,7 +185,7 @@ public class RPNApp {
         case '(' :
           numBrackets++;
         default:
-          inBrackets.append(in);
+          inBrackets.append(in + " ");
       }
     }
     
@@ -150,8 +211,8 @@ public class RPNApp {
    * @param in input char
    **/
   protected static void pushNum(String in) {
-    try
-    stack.push(5);
+    //try
+    //stack.push(5);
   }
   
   
@@ -159,6 +220,7 @@ public class RPNApp {
    * @param message breif explanation of what went wrong
    **/
   public static void error(String message) {
-    
+    System.out.println("Error: " + message);
+    System.exit(0);
   } 
 }
