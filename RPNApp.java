@@ -115,14 +115,19 @@ public class RPNApp {
    * takes the last two numbers on the stack, y and x and pushes x, y times onto the stack
    **/
   protected static void copy() {
-    
+    //gets number of times to duplicate x
+    int n = stack.pop();
+    for (int i = 0; i < n; i ++) {
+      duplicate();
+    }
   }
   
   /** 
    * peeks at the number on top of the stack and pushes it again, duplicating it
    **/
   protected static void duplicate() {
-    
+    int top = stack.peek();
+    stack.push(top);
   }
   
   /** 
