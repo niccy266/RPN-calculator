@@ -160,10 +160,23 @@ public class RPNApp {
   }
   
   /** 
-   * takes the number on top of the stack and moves it to the bottom
+   * takes the number on top of the stack and moves it down k - 1 places
    **/
   protected static void rotate() {
-    
+    //creates a temporary stack to hold stack's values
+    Stack<Integer> tempStack = new Stack<Integer>;
+    //takes the top value from stack and sets it aside
+    int top = stack.pop();
+    //empties the stack onto the temporary stack
+    while (!stack.empty()) {
+      tempStack.push(stack.pull());
+    }
+    //puts the value that was at the top at the bottom
+    stack.push(top);
+    //moves the other values back from 
+    while (!tempStack.empty()) {
+      stack.push(tempStack.pull());
+    }
   }
   
   /** 
