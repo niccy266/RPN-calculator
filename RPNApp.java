@@ -1,3 +1,4 @@
+package week10;
 import java.util.*;
 
 
@@ -38,34 +39,49 @@ public class RPNApp {
    **/
   public static void main(String[] args) {
     Scanner scan = new Scanner(System.in);
-    stack = new Stack<Integer>();
     
-    System.out.println("starting");
-    readInput(scan);
-    System.out.println(stack.toString());
+    //System.out.println("starting");
+    
+    while (scan.hasNextLine()) {
+      stack = new Stack<Integer>();
+      Scanner s = new Scanner(scan.nextLine());
+      boolean success = readInput(s);
+      if (success) {
+         System.out.println(stack.toString());
+      }
+    }
   }
   
   
   /** 
    * Reads to the end of a scanner and interprets inputs.
    * @param s scanner to read from
+   * @return a boolean that is true if the function had no errors.
    **/
-  protected static void readInput(Scanner s) {
+  protected static boolean readInput(Scanner s) {
+    boolean success = true;
     while(s.hasNext()) {
-      interpret(s); 
+      success = interpret(s);
+      if (!success) {
+        return false;
+      } 
     }
     //saves memory by closing scanners when they are completed
     s.close();
+    return true;
   }
   
   
   /** 
    * Takes the next input from a scanner and does the appropriate operation.
    * @param s the scanner to read from and interpret
+   * @return a boolean that is true if the function had no errors.
    */
-  protected static void interpret(Scanner s) {
+  protected static boolean interpret(Scanner s) {
     String in = s.next();
-    System.out.println("read input " + in);
+    //System.out.println("read input " + in);
+    
+    boolean success = true;
     
     switch(in) {
       case "+" :
@@ -73,7 +89,7 @@ public class RPNApp {
       case "*" :
       case "/" :
       case "%" :
-        operate(in);
+        success = operate(in);
         break;
         
       case "+!" :
@@ -81,53 +97,58 @@ public class RPNApp {
       case "*!" :
       case "/!" :
       case "%!" :
-        repeat(in.substring(0, 0));
+        success = repeat(in.substring(0, 1));
         break;
         
       case "c" :
-        copy();
+        success = copy();
         break;
       case "d" :
-        duplicate();
+        success = duplicate();
         break;
       case "o" :
-        output();
+        success = output();
         break;
       case "r" :
-        rotate();
+        success = rotate();
         break;
+        /*
       case "h" :
         help();
         break;
+        */
         
       case "(" :
-        openBracket(s);
+        success = openBracket(s);
         break;
       case ")" :
-        closeBracket();
+        success = closeBracket();
         break;
         
       default :
-        pushNum(in);
+        success = pushNum(in);
     }
+    
+    return success;
   }
   
   /** 
    * Takes the last two numbers on the stack and
    * performs the specified operation.
    * @param in the operation to perform
+   * @return a boolean that is true if the function had no errors.
    **/
-  protected static void operate(String in) {
+  protected static boolean operate(String in) {
    try{
-      int a = stack.pop();
       int b = stack.pop();
+      int a = stack.pop();
       int result = 0;
    
       switch(in){
          case "+":
             result = a + b;
-            
             break;
+            
          case "-":
             result = a - b;
             
@@ -139,14 +160,15 @@ public class RPNApp {
          case "/":
             if(b == 0){
                error("Division by zero");
-               
+               return false;
             }
             result = a / b;
             
             break;
          case "%":
             if(b == 0){
-               error("Remainder by zero");
+               error("remainder by zero");
+               return false;
             }
             result = a % b;
             break;
@@ -154,54 +176,79 @@ public class RPNApp {
      stack.push(result);
     }
     catch(EmptyStackException e){
-      System.out.println("Too few operands");
+      error("too few operands");
+      return;
     }
   }
   
   /** 
    * repeats the operate function until the stack is reduced to 1 number
    * @param in the operator to repeat
+   * @return a boolean that is true if the function had no errors.
    **/
-  protected static void repeat(String in) {
+  protected static boolean repeat(String in) {
+    //System.out.println("repeating operator " + in);
     if (stack.empty()) {
       error("too few operands");
+      return false;
     }
     while (stack.size() > 1) {
       operate(in);
     }
+    return true;
   }
   
   /** 
    * takes the last two numbers on the stack, y and x and pushes x, y times onto the stack
+   * @return a boolean that is true if the function had no errors.
    **/
-  protected static void copy() {
+  protected static boolean copy() {
+  boolean success = true;
     //gets number of times to duplicate x
     int y = stack.pop();
     //duplicates the number y times, starting with one copy still on the stack
     for (int i = 1; i < y; i ++) {
-      duplicate();
+      success = duplicate();
+      if (!success) {
+        return success;       
+      }
     }
+    return success;
   }
   
   /** 
    * peeks at the number on top of the stack and pushes it again, duplicating it
+   * @return a boolean that is true if the function had no errors.
    **/
-  protected static void duplicate() {
+  protected static boolean duplicate() {
+    if (stack.empty()) {
+      return false;
+    }
     int x = stack.peek();
     stack.push(x);
+    return true;
   }
   
   /** 
    * outputs the last number on the stack to System.out
+   * @return a boolean that is true if the function had no errors.
    **/
-  protected static void output() {
+  protected static boolean output() {
+    if (stack.empty()) {
+      return false;
+    }
     System.out.print(stack.peek() + " ");
+    return true;
   }
   
   /** 
    * takes the number on top of the stack and moves it down k - 1 places
+   * @return a boolean that is true if the function had no errors.
    **/
-  protected static void rotate() {
+  protected static boolean rotate() {
+    if (stack.empty()) {
+      return false;
+    }
     //gets number of places to move the top value by
     int n = stack.pop() - 1;
     //creates a temporary stack to hold the values between the top and  values
@@ -253,8 +300,11 @@ public class RPNApp {
   /** Reads until it finds a close bracket and 
    * repeats the operations a number of times
    * equal to number on top of the stack.
+   * @param s scaner to read brackets from
    **/
   protected static void openBracket(Scanner s) {
+    //System.out.println("Opening brackets");
+  
     //getting the symbols inside the brackets and creating a new scanner for it
     String inBrackets = extractBrackets(s);
     Scanner bracketStream;
@@ -285,24 +335,33 @@ public class RPNApp {
     while(s.hasNext() && numBrackets > 0) {
       char in = s.next().charAt(0);;
       switch(in) {
+        //if it's an opening bracket or any other symbol, include it in the string
+        case '(' :
+          numBrackets++;
+          inBrackets.append(in + " ");
+          break;
+          
         case ')' :
           //marks a bracket as closed
           numBrackets--;
           //if this was the final closing bracket, don't include it in the return string
-          if(numBrackets == 0) {
-            break;
+          if(numBrackets > 0) {
+            inBrackets.append(in + " ");
           }
-        //if it's an opening bracket or any other symbol, include it in the string
-        case '(' :
-          numBrackets++;
+          break;
+       //adds all other characters to the inBrackets string
         default:
           inBrackets.append(in + " ");
       }
+      
     }
+    
     
     //if not all the brackets were closed, raise an error
     if (numBrackets > 0) {
       error("unmatched parentheses");
+      s.nextLine();
+      return "";
     }
     
     return inBrackets.toString();
@@ -336,6 +395,6 @@ public class RPNApp {
    **/
   public static void error(String message) {
     System.out.println("Error: " + message);
-    System.exit(1);
+    //System.exit(1);
   } 
 }
