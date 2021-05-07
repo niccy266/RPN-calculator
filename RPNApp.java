@@ -93,7 +93,38 @@ public class RPNApp {
    * @param in the operation to perform
    **/
   protected static void operate(String in) {
-    
+   try{
+      int a = stack.pop();
+      int b = stack.pop();
+      int result;
+   
+      switch(in){
+         case "+":
+            result = a + b;
+            stack.push(result);
+         case "-":
+            result = a - b;
+            stack.push(result);
+         case "*":
+            result = a * b;
+            stack.push(result);
+         case "/":
+            if(b == 0){
+               System.out.println("Error : Division by zero");
+               break;
+            }
+            result = a / b;
+            stack.push(result);
+         case "%":
+            if(b == 0){
+               System.out.println("Error : Remainder by zero");
+               break;
+            }
+            result = a % b:
+            stack.psuh(result);
+    }
+    catch(EmptyStackException e){
+      System.out.println("Too few operands");
   }
   
   /** 
@@ -217,8 +248,11 @@ public class RPNApp {
    * @param in input char
    **/
   protected static void pushNum(String in) {
-    //try
-    //stack.push(5);
+   try{
+      stack.psuh(Integer.parseInt(in));
+   }
+   catch(NumberFormatException e){
+      System.out.println("Error : bad token " + in);
   }
   
   
