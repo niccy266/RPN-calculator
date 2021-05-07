@@ -187,25 +187,29 @@ public class RPNApp {
    * outputs the last number on the stack to System.out
    **/
   protected static void output() {
-    
+    System.out.print(stack.peek() + " ");
   }
   
   /** 
    * takes the number on top of the stack and moves it down k - 1 places
    **/
   protected static void rotate() {
-    //creates a temporary stack to hold stack's values
+    //gets number of places to move the top value by
+    int n = stack.pop() - 1;
+    //creates a temporary stack to hold the values between the top and  values
     Stack<Integer> tempStack = new Stack<Integer>;
+    
     //takes the top value from stack and sets it aside
     int top = stack.pop();
-    //empties the stack onto the temporary stack
-    while (!stack.empty()) {
+    //moves k-1 values from the stack onto the temporary stack
+    for (int i = 0; i < n; i++) {
       tempStack.push(stack.pull());
     }
-    //puts the value that was at the top at the bottom
+    
+    //puts the value that was at the top into it's new position
     stack.push(top);
     //moves the other values back from 
-    while (!tempStack.empty()) {
+    for (int i = 0; i < n; i++) {
       stack.push(tempStack.pull());
     }
   }
