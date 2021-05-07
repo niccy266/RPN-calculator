@@ -40,6 +40,7 @@ public class RPNApp {
     Scanner scan = new Scanner(System.in);
     stack = new Stack<Integer>();
     
+    System.out.println("starting");
     readInput(scan);
     System.out.println(stack.toString());
   }
@@ -64,6 +65,7 @@ public class RPNApp {
    */
   protected static void interpret(Scanner s) {
     String in = s.next();
+    System.out.println("read input " + in);
     
     switch(in) {
       case "+" :
@@ -321,8 +323,7 @@ public class RPNApp {
   protected static void pushNum(String in) {
    try{
       stack.push(Integer.parseInt(in));
-   }
-   catch(NumberFormatException e){
+   }  catch(NumberFormatException e){
       error("bad token '" + in + "'");
    }
   }
