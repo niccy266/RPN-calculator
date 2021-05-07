@@ -2,7 +2,27 @@ import java.util.*;
 
 
 /** 
- * RPN calculator
+ * RPNApp
+ * This class is a calculator that takes inputs in RPN - Reverse Polish Notation.
+ * When a number is read, it is pushed onto the stack.
+ * When an operator is read, it will operate on the top two numbers on the stack
+ * and push the result back onto the stack.
+ * For example, if you want to add 1 and 2, the RPN instruction would be: "1 2 +"
+ * If there are not enough operands an error will be raised.
+ * Operators can be repeated until the stack is reduced to 1 result by adding an !
+ * Accepted operators are + - * / and %. repeat them using +! -! *! /! %!
+ * Brackets are also accepted. When brackets are encountered, the instructions
+ * inside the brackets are repeates n times, where n is the number on top of the stack
+ * For example, "1 3 ( 2 * )" gives [8]
+ * 
+ * The calculator accepts several special instructions
+ * d - Duplicate the top number on the stack, eg; [1, 2] will become [1, 2, 2].
+ * c - Copy. Take the top two numbers from the stack y and x and push x, y times,
+ *     eg; [1, 2, 4] will become [1, 2, 2, 2, 2].
+ * r - Rotate the stack. Takes the number on top of the stack and moves it to the bottom,
+ *     eg; [1, 2, 3] will become [3, 1, 2].
+ * o - Outputs the top number on the stack to the console.
+ * 
  * @author Nicolas Concha
  * @author Ravin Pitawala
  * @author Danuda Jayawardena
@@ -13,7 +33,7 @@ public class RPNApp {
   
   /** 
    * Main function, creates stack and reads input from System.in.
-   * Starting the interpreting cycle.
+   * Starts reading from the stream and 
    * @param args system arguments
    **/
   public static void main(String[] args) {
@@ -74,6 +94,9 @@ public class RPNApp {
       case "r" :
         rotate();
         break;
+      case "h" :
+        help();
+        break;
         
       case "(" :
         openBracket(s);
@@ -101,8 +124,6 @@ public class RPNApp {
    * @param in the operator to repeat
    **/
   protected static void repeat(String in) {
-    system.out.println(in);
-    
     if (stack.empty()) {
       error("too few operands");
     }
@@ -117,8 +138,8 @@ public class RPNApp {
   protected static void copy() {
     //gets number of times to duplicate x
     int y = stack.pop();
-    //duplicates the number n times
-    for (int i = 0; i < y; i ++) {
+    //duplicates the number y times, starting with one copy still on the stack
+    for (int i = 1; i < y; i ++) {
       duplicate();
     }
   }
@@ -144,6 +165,34 @@ public class RPNApp {
   protected static void rotate() {
     
   }
+  
+  /** 
+   * takes the number on top of the stack and moves it to the bottom
+   **/
+  protected static void help() {
+    System.out.println("This app is a calculator that takes inputs in RPN - Reverse Polish Notation.\n"
+                      + "When a number is read, it is pushed onto the stack.\n"
+                      + "When an operator is read, it will operate on the top two numbers on the stack\n"
+                      + "and push the result back onto the stack.\n"
+                      + "For example, if you want to add 1 and 2, the RPN instruction would be: \"1 2 +\"\n"
+                      + "If there are not enough operands an error will be raised.\n"
+                      + "Operators can be repeated until the stack is reduced to 1 result by adding an !\n"
+                      + "Accepted operators are + - * / and %. repeat them using +! -! *! /! %!\n"
+                      + "Brackets are also accepted. When brackets are encountered, the instructions\n"
+                      + "inside the brackets are repeates n times, where n is the number on top of the stack\n"
+                      + "For example, \"1 3 ( 2 * )\" gives [8]\n"
+                      + "\n"
+                      + "The calculator accepts several special instructions\n"
+                      + "d - Duplicate the top number on the stack, eg; [1, 2] will become [1, 2, 2].\n"
+                      + "c - Copy. Take the top two numbers from the stack y and x and push x, y times,\n"
+                      + "    eg; [1, 2, 4] will become [1, 2, 2, 2, 2].\n"
+                      + "r - Rotate the stack. Takes the number on top of the stack and moves it to the bottom,\n"
+                      + "    eg; [1, 2, 3] will become [3, 1, 2].\n"
+                      + "o - Outputs the top number on the stack to the console.\n");
+    System.exit(0);
+  }
+  
+
   
   /** Reads until it finds a close bracket and 
    * repeats the operations a number of times
@@ -197,7 +246,7 @@ public class RPNApp {
     
     //if not all the brackets were closed, raise an error
     if (numBrackets > 0) {
-      error("mismatched brackets");
+      error("unmatched parentheses");
     }
     
     return inBrackets.toString();
@@ -205,11 +254,10 @@ public class RPNApp {
   
   
   /** 
-   * Raises error if there is a closing parenthesis
-   * without an opening parenthesis preceding it at some point
+   * Raises error if there is a closing parenthesis without a matching opening parenthesis.
    **/
   protected static void closeBracket() {
-    error("mismatched brackets");
+    error("unmatched parentheses");
   }
   
   /** 
@@ -222,11 +270,13 @@ public class RPNApp {
   }
   
   
-  /** Method for printing error messages easily. 
-   * @param message breif explanation of what went wrong
+  /** 
+   * Method for handling errors easily.
+   * Prints a description of the error and closes the program
+   * @param message a brief explanation of what went wrong
    **/
   public static void error(String message) {
     System.out.println("Error: " + message);
-    System.exit(0);
+    System.exit(1);
   } 
 }
