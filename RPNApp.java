@@ -124,27 +124,32 @@ public class RPNApp {
       switch(in){
          case "+":
             result = a + b;
-            stack.push(result);
+            
+            break;
          case "-":
             result = a - b;
-            stack.push(result);
+            
+            break;
          case "*":
             result = a * b;
-            stack.push(result);
+            
+            break;
          case "/":
             if(b == 0){
-               System.out.println("Error : Division by zero");
-               break;
+               error("Division by zero");
+               
             }
             result = a / b;
-            stack.push(result);
+            
+            break;
          case "%":
             if(b == 0){
-               System.out.println("Error : Remainder by zero");
-               break;
+               error("Remainder by zero");
             }
-            result = a % b:
-            stack.psuh(result);
+            result = a % b;
+            break;
+      }
+     stack.push(result);
     }
     catch(EmptyStackException e){
       System.out.println("Too few operands");
