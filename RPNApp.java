@@ -119,7 +119,7 @@ public class RPNApp {
    try{
       int a = stack.pop();
       int b = stack.pop();
-      int result;
+      int result = 0;
    
       switch(in){
          case "+":
@@ -153,6 +153,7 @@ public class RPNApp {
     }
     catch(EmptyStackException e){
       System.out.println("Too few operands");
+    }
   }
   
   /** 
@@ -202,20 +203,20 @@ public class RPNApp {
     //gets number of places to move the top value by
     int n = stack.pop() - 1;
     //creates a temporary stack to hold the values between the top and  values
-    Stack<Integer> tempStack = new Stack<Integer>;
+    Stack<Integer> tempStack = new Stack<Integer>();
     
     //takes the top value from stack and sets it aside
     int top = stack.pop();
     //moves k-1 values from the stack onto the temporary stack
     for (int i = 0; i < n; i++) {
-      tempStack.push(stack.pull());
+      tempStack.push(stack.pop());
     }
     
     //puts the value that was at the top into it's new position
     stack.push(top);
     //moves the other values back from 
     for (int i = 0; i < n; i++) {
-      stack.push(tempStack.pull());
+      stack.push(tempStack.pop());
     }
   }
   
@@ -319,10 +320,11 @@ public class RPNApp {
    **/
   protected static void pushNum(String in) {
    try{
-      stack.psuh(Integer.parseInt(in));
+      stack.push(Integer.parseInt(in));
    }
    catch(NumberFormatException e){
-      System.out.println("Error : bad token " + in);
+      error("bad token '" + in + "'");
+   }
   }
   
   
