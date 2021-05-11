@@ -45,10 +45,18 @@ public class RPNApp {
     while (scan.hasNextLine()) {
       stack = new Stack<Integer>();
       Scanner s = new Scanner(scan.nextLine());
-      boolean success = readInput(s);
-      if (success) {
+      try {
+         boolean success = readInput(s);
          System.out.println(stack.toString());
-      }
+     
+         }
+         catch (EmptyStackException e) {
+            error("too few operands");
+         }
+         catch () {}
+         catch (Exception e) {
+            error(e.message);
+         }
     }
   }
   
@@ -59,11 +67,8 @@ public class RPNApp {
    * @return a boolean that is true if the function had no errors.
    **/
   protected static boolean readInput(Scanner s) {
-    boolean success = true;
     while(s.hasNext()) {
-      success = interpret(s);
-      if (!success) {
-        return false;
+         interpret(s);
       } 
     }
     //saves memory by closing scanners when they are completed
@@ -89,7 +94,7 @@ public class RPNApp {
       case "*" :
       case "/" :
       case "%" :
-        success = operate(in);
+        operate(in);
         break;
         
       case "+!" :
@@ -97,20 +102,20 @@ public class RPNApp {
       case "*!" :
       case "/!" :
       case "%!" :
-        success = repeat(in.substring(0, 1));
+        repeat(in.substring(0, 1));
         break;
         
       case "c" :
-        success = copy();
+        copy();
         break;
       case "d" :
-        success = duplicate();
+        duplicate();
         break;
       case "o" :
-        success = output();
+        output();
         break;
       case "r" :
-        success = rotate();
+        rotate();
         break;
         /*
       case "h" :
@@ -119,14 +124,15 @@ public class RPNApp {
         */
         
       case "(" :
-        success = openBracket(s);
+        openBracket(s);
         break;
+        
       case ")" :
-        success = closeBracket();
+        throw new Exception("unmatched parentheses");
         break;
         
       default :
-        success = pushNum(in);
+        pushNum(in);
     }
     
     return success;
@@ -176,7 +182,7 @@ public class RPNApp {
      stack.push(result);
     }
     catch(EmptyStackException e){
-      error("too few operands");
+      throw new Exception("too few operands");
       return;
     }
   }
@@ -188,67 +194,49 @@ public class RPNApp {
    **/
   protected static boolean repeat(String in) {
     //System.out.println("repeating operator " + in);
-    if (stack.empty()) {
-      error("too few operands");
-      return false;
-    }
     while (stack.size() > 1) {
       operate(in);
     }
-    return true;
   }
   
   /** 
    * takes the last two numbers on the stack, y and x and pushes x, y times onto the stack
    * @return a boolean that is true if the function had no errors.
    **/
-  protected static boolean copy() {
-  boolean success = true;
+  protected static void copy() {
     //gets number of times to duplicate x
     int y = stack.pop();
-    //duplicates the number y times, starting with one copy still on the stack
-    for (int i = 1; i < y; i ++) {
+    //starting from 1 because x is still on the stack
+    int i = 1;
+    //makes y copies of x on the stack
+    while (i < y && success) {
       success = duplicate();
-      if (!success) {
-        return success;       
-      }
+      i++;
     }
-    return success;
   }
   
   /** 
    * peeks at the number on top of the stack and pushes it again, duplicating it
-   * @return a boolean that is true if the function had no errors.
    **/
-  protected static boolean duplicate() {
+  protected static void duplicate() {
     if (stack.empty()) {
-      return false;
+      error("too few operands");
     }
     int x = stack.peek();
     stack.push(x);
-    return true;
   }
   
   /** 
    * outputs the last number on the stack to System.out
-   * @return a boolean that is true if the function had no errors.
    **/
-  protected static boolean output() {
-    if (stack.empty()) {
-      return false;
-    }
+  protected static void output() {
     System.out.print(stack.peek() + " ");
-    return true;
   }
   
   /** 
    * takes the number on top of the stack and moves it down k - 1 places
-   * @return a boolean that is true if the function had no errors.
    **/
-  protected static boolean rotate() {
-    if (stack.empty()) {
-      return false;
-    }
+  protected static void rotate() {
     //gets number of places to move the top value by
     int n = stack.pop() - 1;
     //creates a temporary stack to hold the values between the top and  values
@@ -353,7 +341,6 @@ public class RPNApp {
         default:
           inBrackets.append(in + " ");
       }
-      
     }
     
     
@@ -369,13 +356,6 @@ public class RPNApp {
   
   
   /** 
-   * Raises error if there is a closing parenthesis without a matching opening parenthesis.
-   **/
-  protected static void closeBracket() {
-    error("unmatched parentheses");
-  }
-  
-  /** 
    * Parses the input to an integer and pushes it to the stack.
    * @param in input char
    **/
@@ -384,6 +364,7 @@ public class RPNApp {
       stack.push(Integer.parseInt(in));
    }  catch(NumberFormatException e){
       error("bad token '" + in + "'");
+      throw
    }
   }
   
