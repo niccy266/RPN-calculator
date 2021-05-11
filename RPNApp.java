@@ -30,7 +30,7 @@ import java.util.*;
  **/
 public class RPNApp {
   
-  private static Stack<Integer> stack;
+  private static Stack<Long> stack;
   
   /** 
    * Main function, creates stack and reads input from System.in.
@@ -43,50 +43,43 @@ public class RPNApp {
     //System.out.println("starting");
     
     while (scan.hasNextLine()) {
-      stack = new Stack<Integer>();
+      stack = new Stack<Long>();
       Scanner s = new Scanner(scan.nextLine());
       try {
-         boolean success = readInput(s);
+         readInput(s);
          System.out.println(stack.toString());
-     
-         }
-         catch (EmptyStackException e) {
-            error("too few operands");
-         }
-         catch () {}
-         catch (Exception e) {
-            error(e.message);
-         }
+      }
+      catch (EmptyStackException e) {
+         System.out.println("Error: too few operands");
+      }
+      catch (Exception e) {
+         System.out.println(e.getMessage());
+      }
     }
-  }
   
+  }
   
   /** 
    * Reads to the end of a scanner and interprets inputs.
    * @param s scanner to read from
-   * @return a boolean that is true if the function had no errors.
    **/
-  protected static boolean readInput(Scanner s) {
+  protected static void readInput(Scanner s) throws Exception {
     while(s.hasNext()) {
          interpret(s);
-      } 
+      
     }
     //saves memory by closing scanners when they are completed
     s.close();
-    return true;
   }
   
   
   /** 
    * Takes the next input from a scanner and does the appropriate operation.
    * @param s the scanner to read from and interpret
-   * @return a boolean that is true if the function had no errors.
    */
-  protected static boolean interpret(Scanner s) {
+  protected static void interpret(Scanner s) throws Exception {
     String in = s.next();
     //System.out.println("read input " + in);
-    
-    boolean success = true;
     
     switch(in) {
       case "+" :
@@ -128,27 +121,24 @@ public class RPNApp {
         break;
         
       case ")" :
-        throw new Exception("unmatched parentheses");
+        error("unmatched parentheses");
         break;
         
       default :
         pushNum(in);
     }
-    
-    return success;
   }
   
   /** 
    * Takes the last two numbers on the stack and
    * performs the specified operation.
    * @param in the operation to perform
-   * @return a boolean that is true if the function had no errors.
    **/
-  protected static boolean operate(String in) {
+  protected static void operate(String in) throws Exception {
    try{
-      int b = stack.pop();
-      int a = stack.pop();
-      int result = 0;
+      long b = stack.pop();
+      long a = stack.pop();
+      long result = 0;
    
       switch(in){
          case "+":
@@ -166,7 +156,6 @@ public class RPNApp {
          case "/":
             if(b == 0){
                error("Division by zero");
-               return false;
             }
             result = a / b;
             
@@ -174,7 +163,6 @@ public class RPNApp {
          case "%":
             if(b == 0){
                error("remainder by zero");
-               return false;
             }
             result = a % b;
             break;
@@ -182,17 +170,15 @@ public class RPNApp {
      stack.push(result);
     }
     catch(EmptyStackException e){
-      throw new Exception("too few operands");
-      return;
+      error("too few operands");
     }
   }
   
   /** 
    * repeats the operate function until the stack is reduced to 1 number
    * @param in the operator to repeat
-   * @return a boolean that is true if the function had no errors.
    **/
-  protected static boolean repeat(String in) {
+  protected static void repeat(String in) throws Exception {
     //System.out.println("repeating operator " + in);
     while (stack.size() > 1) {
       operate(in);
@@ -203,14 +189,14 @@ public class RPNApp {
    * takes the last two numbers on the stack, y and x and pushes x, y times onto the stack
    * @return a boolean that is true if the function had no errors.
    **/
-  protected static void copy() {
+  protected static void copy() throws Exception {
     //gets number of times to duplicate x
-    int y = stack.pop();
+    long y = longToInt(stack.pop());
     //starting from 1 because x is still on the stack
     int i = 1;
     //makes y copies of x on the stack
-    while (i < y && success) {
-      success = duplicate();
+    while (i < y) {
+      duplicate();
       i++;
     }
   }
@@ -219,10 +205,7 @@ public class RPNApp {
    * peeks at the number on top of the stack and pushes it again, duplicating it
    **/
   protected static void duplicate() {
-    if (stack.empty()) {
-      error("too few operands");
-    }
-    int x = stack.peek();
+    long x = stack.peek();
     stack.push(x);
   }
   
@@ -233,17 +216,29 @@ public class RPNApp {
     System.out.print(stack.peek() + " ");
   }
   
+  protected static int longToInt(Long l) throws Exception {
+    int n = 0;
+    try {
+       //gets number of places to move the top value by
+       n = l.intValue();
+       }
+    catch (Exception e) {
+       error("input " + l + " isn't integer");
+    }
+    return n;
+  }
+  
   /** 
    * takes the number on top of the stack and moves it down k - 1 places
    **/
-  protected static void rotate() {
-    //gets number of places to move the top value by
-    int n = stack.pop() - 1;
+  protected static void rotate() throws Exception {
+    long t = stack.pop();
+    int n = longToInt(t) - 1;
     //creates a temporary stack to hold the values between the top and  values
-    Stack<Integer> tempStack = new Stack<Integer>();
+    Stack<Long> tempStack = new Stack<Long>();
     
     //takes the top value from stack and sets it aside
-    int top = stack.pop();
+    long top = stack.pop();
     //moves k-1 values from the stack onto the temporary stack
     for (int i = 0; i < n; i++) {
       tempStack.push(stack.pop());
@@ -290,7 +285,7 @@ public class RPNApp {
    * equal to number on top of the stack.
    * @param s scaner to read brackets from
    **/
-  protected static void openBracket(Scanner s) {
+  protected static void openBracket(Scanner s) throws Exception {
     //System.out.println("Opening brackets");
   
     //getting the symbols inside the brackets and creating a new scanner for it
@@ -298,7 +293,7 @@ public class RPNApp {
     Scanner bracketStream;
     
     //number of times to repeat brackets
-    int n = stack.pop();
+    int n = longToInt(stack.pop());
     for (int i = 0; i < n; i++) {
       //resets the bracket scanner so it can be repeated
       bracketStream = new Scanner(inBrackets);
@@ -313,7 +308,7 @@ public class RPNApp {
    * @param s the string to read bracket data from
    * @return string of characters between the brackets
    **/
-  protected static String extractBrackets(Scanner s) {
+  protected static String extractBrackets(Scanner s) throws Exception {
     //string for storing the contents of the brackets
     StringBuilder inBrackets = new StringBuilder();
     //num of unclosed brackets
@@ -359,12 +354,11 @@ public class RPNApp {
    * Parses the input to an integer and pushes it to the stack.
    * @param in input char
    **/
-  protected static void pushNum(String in) {
+  protected static void pushNum(String in) throws Exception {
    try{
-      stack.push(Integer.parseInt(in));
+      stack.push(Long.parseLong(in));
    }  catch(NumberFormatException e){
       error("bad token '" + in + "'");
-      throw
    }
   }
   
@@ -374,8 +368,8 @@ public class RPNApp {
    * Prints a description of the error and closes the program
    * @param message a brief explanation of what went wrong
    **/
-  public static void error(String message) {
-    System.out.println("Error: " + message);
+  public static void error(String message) throws Exception {
+    throw new Exception("Error: " + message);
     //System.exit(1);
   } 
 }
