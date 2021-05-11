@@ -146,8 +146,8 @@ public class RPNApp {
    **/
   protected static boolean operate(String in) {
    try{
-      int b = stack.pop();
       int a = stack.pop();
+      int b = stack.pop();
       int result = 0;
    
       switch(in){
