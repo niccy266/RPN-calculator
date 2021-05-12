@@ -216,6 +216,11 @@ public class RPNApp {
     System.out.print(stack.peek() + " ");
   }
   
+  
+  /** 
+   * converts a long to an int. throws an exception if it isn't convertible
+   * @param l long to convert to int
+   **/
   protected static int longToInt(Long l) throws Exception {
     int n = 0;
     try {
