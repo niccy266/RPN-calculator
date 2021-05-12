@@ -27,16 +27,20 @@ import java.util.*;
  * @author Nicolas Concha
  * @author Ravin Pitawala
  * @author Danuda Jayawardena
- **/
+ */
 public class RPNApp {
 
+    /**
+     * The stack of the program, used to store working numbers and 
+     * results of operations.
+     */
     private static Stack < Long > stack;
 
     /**
      * Main function, creates stack and reads input from System.in.
      * Starts reading from the stream and
      * @param args system arguments
-     **/
+     */
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
 
@@ -60,7 +64,7 @@ public class RPNApp {
      * Reads to the end of a scanner and interprets inputs.
      * @param s scanner to read from
      * @throws Exception if any errors occurred while processing
-     **/
+     */
     protected static void readInput(Scanner s) throws Exception {
         while (s.hasNext()) {
             interpret(s);
@@ -125,8 +129,8 @@ public class RPNApp {
      * Takes the last two numbers on the stack and
      * performs the specified operation.
      * @param in the operation to perform
-     * @throws Exception Exception if any operations were illegal or the stack was empty
-     **/
+     * @throws Exception if any operations were illegal or the stack was empty
+     */
     protected static void operate(String in ) throws Exception {
         try {
             long b = stack.pop();
@@ -148,7 +152,7 @@ public class RPNApp {
                     break;
                 case "/":
                     if (b == 0) {
-                        error("Division by zero");
+                        error("division by 0");
                     }
                     result = a / b;
 
@@ -167,10 +171,10 @@ public class RPNApp {
     }
 
     /**
-     * repeats the operate function until the stack is reduced to 1 number
+     * repeats the operate function until the stack is reduced to 1 number.
      * @param in the operator to repeat
      * @throws Exception if the stack was empty
-     **/
+     */
     protected static void repeat(String in ) throws Exception {
         //System.out.println("repeating operator " + in);
         while (stack.size() > 1) {
@@ -180,10 +184,9 @@ public class RPNApp {
 
     /**
      * takes the last two numbers on the stack, y and x and 
-     * pushes x, y times onto the stack
-     * @return a boolean that is true if the function had no errors.
+     * pushes x, y times onto the stack.
      * @throws Exception if there weren't enough numbers in the stack
-     **/
+     */
     protected static void copy() throws Exception {
         //gets number of times to duplicate x
         long y = longToInt(stack.pop());
@@ -197,8 +200,8 @@ public class RPNApp {
     }
 
     /**
-     * peeks at the number on top of the stack and pushes it, duplicating it
-     **/
+     * peeks at the number on top of the stack and pushes it, duplicating it.
+     */
     protected static void duplicate() {
         long x = stack.peek();
         stack.push(x);
@@ -206,7 +209,7 @@ public class RPNApp {
 
     /**
      * outputs the last number on the stack to System.out.
-     **/
+     */
     protected static void output() {
         System.out.print(stack.peek() + " ");
     }
@@ -215,8 +218,9 @@ public class RPNApp {
     /**
      * converts a long to an int. 
      * @param l long to convert to int
+     * @return the integer conversion of l
      * @throws Exception if the number couldn't be converted
-     **/
+     */
     protected static int longToInt(Long l) throws Exception {
         int n = 0;
         try {
@@ -229,9 +233,9 @@ public class RPNApp {
     }
 
     /**
-     * takes the number on top of the stack and moves it down k - 1 places
+     * takes the number on top of the stack and moves it down k - 1 places.
      * @throws Exception if there weren't enough numbers on the stack
-     **/
+     */
     protected static void rotate() throws Exception {
         long t = stack.pop();
         int n = longToInt(t) - 1;
@@ -261,12 +265,13 @@ public class RPNApp {
      * @param s scaner to read brackets from
      * @throws Exception if the brackets aren't closed or an error occure while 
      *   processing the instructions inside the brackets
-     **/
+     */
     protected static void openBracket(Scanner s) throws Exception {
         //System.out.println("Opening brackets");
 
-        //getting the symbols inside the brackets and creating a new scanner for it
+        //getting the symbols inside the brackets
         String inBrackets = extractBrackets(s);
+        //creating a new scanner for it
         Scanner bracketStream;
 
         //number of times to repeat brackets
@@ -285,7 +290,7 @@ public class RPNApp {
      * @param s the string to read bracket data from
      * @return string of characters between the brackets
      * @throws Exception if the brackets aren't closed
-     **/
+     */
     protected static String extractBrackets(Scanner s) throws Exception {
         //string for storing the contents of the brackets
         StringBuilder inBrackets = new StringBuilder();
@@ -294,7 +299,7 @@ public class RPNApp {
 
         //finds the matching closing bracket
         while (s.hasNext() && numBrackets > 0) {
-            char in = s.next().charAt(0);;
+            char in = s.next().charAt(0);
             switch ( in ) {
                 //if it's an opening bracket or any other symbol, 
                 //include it in the string
@@ -334,7 +339,7 @@ public class RPNApp {
      * Parses the input to an integer and pushes it to the stack.
      * @param in input char
      * @throws Exception if the input token isn't a number
-     **/
+     */
     protected static void pushNum(String in ) throws Exception {
         try {
             stack.push(Long.parseLong( in ));
@@ -349,7 +354,7 @@ public class RPNApp {
      * Prints a description of the error and closes the program
      * @param message a brief explanation of what went wrong
      * @throws Exception an exception with a formatted message
-     **/
+     */
     public static void error(String message) throws Exception {
         throw new Exception("Error: " + message);
         //System.exit(1);
