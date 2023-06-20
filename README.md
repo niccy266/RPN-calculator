@@ -2,7 +2,7 @@
 
 This is a calculator that takes inputs in RPN - Reverse Polish Notation.
 
-When an operator is read, it will operate on the top two numbers on the stack and push the result back onto the stack. For example, if you want to add 1 and 2, the instruction would be: "1 2 +". If there are not enough operands an error will be raised.
+When an operator is read, it will operate on the top two numbers on the stack and push the result back onto the stack. E.g. if you want to add 1 and 2, the instruction would be: "1 2 +". If there are not enough operands an error will be raised.
 
 
 Accepted operators are + - * / and %. Operators can be repeated until the stack is reduced to 1 item by adding an ! like so: +! -! *! /! %!
@@ -17,8 +17,6 @@ The calculator accepts several special instructions
 &nbsp; c - Copy. Take the top two numbers from the stack y and x and push x, y times
       eg; [1, 2, 4] will become [1, 2, 2, 2, 2].
   
-&nbsp; r - Rotate the stack. Takes the number on top of the stack and moves it down
-      n - 1 spaces, where n is the number on top of the stack.
-      eg; performing r on [1, 2, 3, 2] will become [1, 3, 2].
+&nbsp; r - Rotate the stack. Takes the number on top of the stack and moves it down (n - 1) spaces, where n is the number on top of the stack. E.g. performing r on [1, 2, 3, 2] will become [1, 3, 2].
   
 &nbsp; o - Outputs the top number on the stack to the console.
