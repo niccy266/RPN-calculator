@@ -12,13 +12,13 @@ For example, "1 3 ( 2 * )" gives [8]. The three is pulled from the stack, then t
 
 The calculator accepts several special instructions
 
-  /t d - Duplicate the top number on the stack, eg; [1, 2] will become [1, 2, 2].
+&nbsp; d - Duplicate the top number on the stack, eg; [1, 2] will become [1, 2, 2].
   
-  /t c - Copy. Take the top two numbers from the stack y and x and push x, y times
+&nbsp; c - Copy. Take the top two numbers from the stack y and x and push x, y times
       eg; [1, 2, 4] will become [1, 2, 2, 2, 2].
   
-  /t r - Rotate the stack. Takes the number on top of the stack and moves it down
+&nbsp; r - Rotate the stack. Takes the number on top of the stack and moves it down
       n - 1 spaces, where n is the number on top of the stack.
       eg; performing r on [1, 2, 3, 2] will become [1, 3, 2].
   
-  /t o - Outputs the top number on the stack to the console.
+&nbsp; o - Outputs the top number on the stack to the console.
